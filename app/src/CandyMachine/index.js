@@ -360,14 +360,19 @@ const CandyMachine = ({ walletAddress }) => {
     machineStats && (
       <div className="machine-container">
         <p className="data">{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>
-        <p className="data">{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
-        <button
-          className="cta-button mint-button"
-          onClick={mintToken}
-          disabled={isMinting}
-        >
-          Mint NFT
-        </button>
+        <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
+        {/* Check to see if these properties are equal! */}
+        {machineStats.itemsRedeemed === machineStats.itemsAvailable ? (
+          <p className="sub-text">Sold Out 🙊</p>
+        ) : (
+          <button
+            className="cta-button mint-button"
+            onClick={mintToken}
+            disabled={isMinting}
+          >
+            Mint NFT
+          </button>
+        )}
         {isLoadingMints && <p>LOADING MINTS...</p>}
         {/* If we have mints available in our array, let's render some items */}
         {mints.length > 0 && renderMintedItems()}
