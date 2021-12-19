@@ -114,6 +114,7 @@ const CandyMachine = ({ walletAddress }) => {
 
   const mintToken = async () => {
     try {
+      setIsMinting(true);
       const mint = web3.Keypair.generate();
       const token = await getTokenWallet(
         walletAddress.publicKey,
@@ -198,6 +199,7 @@ const CandyMachine = ({ walletAddress }) => {
             const { result } = notification;
             if (!result.err) {
               console.log("NFT Minted!");
+              setIsMinting(false);
             }
           }
         },
@@ -206,6 +208,7 @@ const CandyMachine = ({ walletAddress }) => {
     } catch (error) {
       let message = error.msg || "Minting failed! Please try again!";
 
+      setIsMinting(false);
       if (!error.msg) {
         if (error.message.indexOf("0x138")) {
         } else if (error.message.indexOf("0x137")) {
@@ -327,6 +330,9 @@ const CandyMachine = ({ walletAddress }) => {
       goLiveDateTimeString,
     });
 
+    // Set loading flag.
+    setIsLoadingMints(true);
+
     const data = await fetchHashTable(
       process.env.REACT_APP_CANDY_MACHINE_ID,
       true
@@ -338,13 +344,15 @@ const CandyMachine = ({ walletAddress }) => {
         const response = await fetch(mint.data.uri);
         const parse = await response.json();
         console.log("Past Minted NFT", mint);
-
         // Get image URI
         if (!mints.find((mint) => mint === parse.image)) {
           setMints((prevState) => [...prevState, parse.image]);
         }
       }
     }
+
+    // Remove loading flag.
+    setIsLoadingMints(false);
   };
 
   return (
@@ -353,9 +361,14 @@ const CandyMachine = ({ walletAddress }) => {
       <div className="machine-container">
         <p className="data">{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>
         <p className="data">{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
-        <button className="cta-button mint-button" onClick={mintToken}>
+        <button
+          className="cta-button mint-button"
+          onClick={mintToken}
+          disabled={isMinting}
+        >
           Mint NFT
         </button>
+        {isLoadingMints && <p>LOADING MINTS...</p>}
         {/* If we have mints available in our array, let's render some items */}
         {mints.length > 0 && renderMintedItems()}
       </div>
