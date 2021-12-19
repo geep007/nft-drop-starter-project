@@ -8,6 +8,12 @@
   flex-direction: column;
 }
 
+p.data {
+  background-color: rgba(256, 0, 0, 0.4);
+  font-size: large;
+  font-weight: 800;
+}
+
 .gif-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
