@@ -1,0 +1,19 @@
+{
+  "name": "Levi",
+  "symbol": "",
+  "image": "1.png",
+  "properties": {
+    "files": [
+      {
+        "uri": "1.png",
+        "type": "image/png"
+      }
+    ],
+    "creators": [
+      {
+        "address": "HfBQmSWqGrprKhVuumUM5U6raJvMnyKm2zcjm3ZS7tod",
+        "share": 100
+      }
+    ]
+  }
+}
